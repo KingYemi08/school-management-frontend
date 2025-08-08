@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
-  const base_url = "http://localhost:4000/api/v1";
+  const base_url = "https://learncore.onrender.com/api/v1";
   const token = `Bearer: ${localStorage.getItem("accessToken")}`;
   // const decodedToken = token ? jwtDecode(token) : null;
   const userRole = null;
