@@ -1,0 +1,22 @@
+.hide::-webkit-scrollbar {
+  display: none;
+}
+.hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.myStyle tbody tr:nth-child(even){
+  background-color: #00325c;
+  color: white;
+}
+.myStyle tbody tr:nth-child(odd){
+  background-color: white;
+
+}
+.imp{
+  background-color: aqua !important;
+}
+
+.inp:focus label{
+  top: -2;
+}
