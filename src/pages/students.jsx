@@ -757,7 +757,6 @@ const Students = () => {
                                         (s) => s._id === student._id
                                       );
                                       setEditingStudentId(newStudent);
-                                      f;
                                       openOverlay();
                                     }}
                                     className="text-sm px-2 py-1.5 cursor-pointer object-cover hover:bg-gray-100"

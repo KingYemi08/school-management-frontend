@@ -768,7 +768,7 @@ const AddStudent = () => {
                     <p className="text-sm">No students in this class...</p>
                   ) : (
                     <div>
-                      {singleClass.students.map((s) => {
+                      {singleClass.students.map((s, index) => {
                         return (
                           <div key={s._id}>
                             {index + 1}. {s.name}
