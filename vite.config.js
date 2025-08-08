@@ -10,5 +10,5 @@ export default defineConfig({
       "/api": "https://learncore.onrender.com/api/v1",
     },
   },
-  plugins: [react()],
+  plugins: [react(),tailwindcss()],
 });
