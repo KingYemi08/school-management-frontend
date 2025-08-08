@@ -94,7 +94,13 @@ const Teachers = () => {
               </small>
             </p>
           </div>
-          <div className="border h-40 w-40"></div>
+          <div className="border h-40 w-40">
+            <img
+              src={currentUser ? currentUser.avatar : null}
+              className="h-full w-full"
+              alt=""
+            />
+          </div>
         </div>
         <div className="grid grid-cols-3 gap-4 p-5">
           <div>
