@@ -47,12 +47,12 @@ const Class = () => {
             return (
               <li
                 onClick={() => {
-                  setOverlAppear("classProfile")
+                  setOverlAppear("classProfile");
                   const newClass = availableClass.find(
                     (cl) => cl._id === c._id
                   );
-                  setSingleClass(newClass)
-                  openOverlay()
+                  setSingleClass(newClass);
+                  openOverlay();
                 }}
                 className="bg-white cursor-pointer shadow-xl rounded py-3"
                 key={index}
@@ -71,6 +71,10 @@ const Class = () => {
                 <p className="capitalize px-1.5 text-sm p">
                   <span className="font-semibold">Section</span>:{" "}
                   <small>{c.section}</small>
+                </p>
+                <p className="capitalize px-1.5 text-sm p">
+                  <span className="font-semibold">Total Students</span>:{" "}
+                  <span>{c.students.length}</span>
                 </p>
               </li>
             );

@@ -115,7 +115,6 @@ const Students = () => {
       }
     }
   }, []);
-  console.log(currentUser);
   if (currentUser.role === "student" || currentUser.role === "prefect")
     return (
       <div>

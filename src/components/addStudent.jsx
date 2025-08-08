@@ -21,6 +21,8 @@ const AddStudent = () => {
     closeOverlay,
     assignClass,
     getStudents,
+    teacherPreview,
+    setTeacherPreview,
     availableClass,
     addCourse,
     studentChange,
@@ -155,7 +157,9 @@ const AddStudent = () => {
         gender: "",
         password: "",
         courseId: "",
+        avatar: null
       });
+      setTeacherPreview("")
       closeOverlay();
     } catch (error) {
       console.log(error);
@@ -591,6 +595,24 @@ const AddStudent = () => {
                     </select>
                   </div>
                 </div>
+                <div className="py-1">
+                  <label htmlFor="">Profile Picture:</label>
+                  <input
+                    type="file"
+                    placeholder="Enter email..."
+                    className="w-full placeholder:text-sm placeholder:text-gray-400 mt-0.5 border focus:outline-2 focus:outline-[aqua] border-gray-300 rounded ps-1.5 py-1"
+                    onChange={teacherChange}
+                    name="avatar"
+                    accept="image/*"
+                  />
+                </div>
+                {teacherPreview && (
+                  <img
+                    src={teacherPreview}
+                    alt="preview"
+                    className="w-32 h-32 object-cover rounded mt-2"
+                  />
+                )}
                 {error && (
                   <p className="text-center text-sm text-red-500">{error}</p>
                 )}
@@ -735,18 +757,26 @@ const AddStudent = () => {
                 />
               </div>
               <div className="text-sm">
-                <span>Teacher: {singleClass ? singleClass.teacher.name : ""}</span>
+                <span>
+                  Teacher: {singleClass ? singleClass.teacher.name : ""}
+                </span>
               </div>
               <div className="py-2">
                 <span className="underline font-semibold">Students</span>
                 <div className="py-1 grid grid-cols-3 gap-4">
-                  {
-                    singleClass.students.map((s, index)=>{
-                      return(
-                        <div key={s._id}>{index + 1}. {s.name}</div>
-                      )
-                    })
-                  }
+                  {singleClass.students.length === 0 ? (
+                    <p className="text-sm">No students in this class...</p>
+                  ) : (
+                    <div>
+                      {singleClass.students.map((s) => {
+                        return (
+                          <div key={s._id}>
+                            {index + 1}. {s.name}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

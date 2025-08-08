@@ -6,34 +6,35 @@ import { useNavigate } from "react-router-dom";
 const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
-  const base_url = "https://learncore.onrender.com/api/v1";
+  const base_url = "http://localhost:4000/api/v1";
   const token = `Bearer: ${localStorage.getItem("accessToken")}`;
   // const decodedToken = token ? jwtDecode(token) : null;
   const userRole = null;
   const userId = null;
   const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
-  const [file, setFile] = useState()
+  const [file, setFile] = useState();
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
   const [classForm, setClassForm] = useState({
     grade: "",
-    section: ""
-  })
+    section: "",
+  });
   const [studentForm, setStudentForm] = useState({
     name: "",
     age: "",
     email: "",
     avatar: null,
     password: "",
-    classId: ""
+    classId: "",
   });
   const [teacherForm, setTeacherForm] = useState({
     name: "",
     email: "",
     gender: "",
     password: "",
+    avatar: null,
     courseId: "",
   });
   const navigate = useNavigate();
@@ -47,12 +48,13 @@ export default function GlobalProvider({ children }) {
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState([]);
   const [teachers, setTeachers] = useState([]);
-  const [availableClass, setAvailableClass] = useState([])
-  const [studClass, setStudClass] = useState([])
+  const [availableClass, setAvailableClass] = useState([]);
+  const [studClass, setStudClass] = useState([]);
   const [singleStudent, setSingleStudent] = useState();
   // const [currentUser, setCurrentUser] = useState();
-  const [singleClass, setSingleClass] = useState()
-  const [studentPreview, setStudentPreview] = useState()
+  const [singleClass, setSingleClass] = useState();
+  const [studentPreview, setStudentPreview] = useState();
+  const [teacherPreview, setTeacherPreview] = useState()
   const [course, setCourse] = useState();
   const [studentLoading, setStudentLoading] = useState(false);
   const [coursesLoading, setCoursesLoading] = useState(false);
@@ -89,36 +91,40 @@ export default function GlobalProvider({ children }) {
     if (!currentUser) navigate("/");
   }, [navigate]);
 
-
   const loginChange = (e) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
   };
   const classChange = (e) => {
     const { name, value } = e.target;
-    setClassForm({...classForm, [name]: value})
-  }
-
+    setClassForm({ ...classForm, [name]: value });
+  };
 
   const studentChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       const file = files[0];
       setStudentForm({ ...studentForm, [name]: file });
-      if(file){
-        setStudentPreview(URL.createObjectURL(file))
+      if (file) {
+        setStudentPreview(URL.createObjectURL(file));
       }
     } else {
       setStudentForm({ ...studentForm, [name]: value });
     }
-  }
-
-
-  const teacherChange = (e) => {
-    const { name, value } = e.target;
-    setTeacherForm({ ...teacherForm, [name]: value });
   };
 
+  const teacherChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      const file = files[0];
+      setTeacherForm({ ...teacherForm, [name]: file });
+      if(file){
+        setTeacherPreview(URL.createObjectURL(file))
+      }
+    } else {
+      setTeacherForm({ ...teacherForm, [name]: value });
+    }
+  };
 
   const LoginUser = async () => {
     try {
@@ -185,22 +191,22 @@ export default function GlobalProvider({ children }) {
       console.log(error);
     }
   };
-  const getStudentByClass = async(id) => {
+  const getStudentByClass = async (id) => {
     try {
-      setStudentLoading(true)
+      setStudentLoading(true);
       const res = await axios.get(`${base_url}/class/student/${id}`, {
         headers: {
-          Authorization: token
-        }
-      })
-      setStudClass(res.data.data)
-      setStudentLoading(false)
+          Authorization: token,
+        },
+      });
+      setStudClass(res.data.data);
+      setStudentLoading(false);
     } catch (error) {
-      setStudentLoading(false)
+      setStudentLoading(false);
       console.log(error);
-      setStudentError(error.response.data.msg)
+      setStudentError(error.response.data.msg);
     }
-  }
+  };
   const getTeacherById = async (id) => {
     try {
       const res = await axios.get(`${base_url}/teacher/${id}`, {
@@ -230,7 +236,7 @@ export default function GlobalProvider({ children }) {
       const res = await axios.post(`${base_url}/student`, studentForm, {
         headers: {
           Authorization: token,
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       getStudents();
@@ -316,20 +322,24 @@ export default function GlobalProvider({ children }) {
       console.log(error);
     }
   };
-  const assignClass = async(id, classId) => {
+  const assignClass = async (id, classId) => {
     const data = {
-      id: id
-    }
+      id: id,
+    };
     try {
-      const res = await axios.post(`${base_url}/class/regTeacher/${classId}`, data, {
-        headers: {
-          Authorization: token
+      const res = await axios.post(
+        `${base_url}/class/regTeacher/${classId}`,
+        data,
+        {
+          headers: {
+            Authorization: token,
+          },
         }
-      })
+      );
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const getTeacher = async () => {
     try {
       setTeacherLoading(true);
@@ -345,23 +355,24 @@ export default function GlobalProvider({ children }) {
       console.log(error);
     }
   };
-  const getClass = async() => {
+  const getClass = async () => {
     try {
       const res = await axios.get(`${base_url}/class`, {
         headers: {
-          Authorization: token
-        }
-      })
-      setAvailableClass(res.data.data)
+          Authorization: token,
+        },
+      });
+      setAvailableClass(res.data.data);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   const addTeacher = async () => {
     try {
       const res = await axios.post(`${base_url}/teacher`, teacherForm, {
         headers: {
           Authorization: token,
+          "Content-Type": "multipart/form-data"
         },
       });
       getTeacher();
@@ -369,18 +380,18 @@ export default function GlobalProvider({ children }) {
       console.log(error);
     }
   };
-  const addClass = async() => {
+  const addClass = async () => {
     try {
       await axios.post(`${base_url}/class`, classForm, {
         headers: {
-          Authorization: token
-        }
-      })
-      getClass()
+          Authorization: token,
+        },
+      });
+      getClass();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   const logout = async () => {
     const data = {
       id: currentUser._id,
@@ -428,6 +439,7 @@ export default function GlobalProvider({ children }) {
     singleClass,
     teacherForm,
     courses,
+    teacherPreview,
     availableClass,
     accessToken,
     teachers,
@@ -443,6 +455,7 @@ export default function GlobalProvider({ children }) {
     openOverlay,
     setStudentPreview,
     addTeacher,
+    setTeacherPreview,
     getTeacher,
     deleteStudent,
     getCourseById,
